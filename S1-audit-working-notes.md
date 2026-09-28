@@ -2,7 +2,7 @@
 
 **Paper:** When Agents Delegate: Accountability Chains in Multi-Agent AI Systems (Bahidika, 2026)
 
-Per-assessment verbatim quotations, source URLs, and rationale for all twenty-five verdicts reported in Section 6. Each artifact's audit was independently re-verified against the cited sources; two initially paraphrased quotations were corrected to exact wording during verification.
+Per-assessment verbatim quotations, source URLs, and rationale for all twenty-five verdicts reported in Section VI of the article. Each artifact's audit was independently re-verified against the cited sources; two initially paraphrased quotations were corrected to exact wording during verification.
 
 ## MCP (Model Context Protocol) specification, modelcontextprotocol.io
 
@@ -94,7 +94,7 @@ Per-assessment verbatim quotations, source URLs, and rationale for all twenty-fi
 
 ### C2 verdict: partial
 
-**Evidence:** "Interrupts allow you to pause graph execution at specific points and wait for external input before continuing. This enables human-in-the-loop patterns." and "One of the most common uses of interrupts is to pause before a critical action and ask for approval." But: "The documentation does not explicitly identify or name specific human principals... references generic roles like 'caller,' 'reviewer,' 'user,' and 'human' without specifying identity requirements or authentication mechanisms." (https://docs.langchain.com/oss/python/langgraph/interrupts)
+**Evidence:** "Interrupts allow you to pause graph execution at specific points and wait for external input before continuing. This enables human-in-the-loop patterns." and "One of the most common uses of interrupts is to pause before a critical action and ask for approval." But the documentation does not explicitly identify or name specific human principals; it references generic roles like 'caller,' 'reviewer,' 'user,' and 'human' without specifying identity requirements or authentication mechanisms. (https://docs.langchain.com/oss/python/langgraph/interrupts)
 
 **Rationale:** interrupt() is a first-class framework hook an app can use to anchor a human, but it is optional, per-node, and carries no identity of the approving person. No end-to-end human principal is represented in the framework; identity is lost at the first agent boundary unless the app builds it.
 
@@ -106,7 +106,7 @@ Per-assessment verbatim quotations, source URLs, and rationale for all twenty-fi
 
 ### C4 verdict: partial
 
-**Evidence:** Only advisory language exists: "Trace the full coordination flow across agents with LangSmith" and "set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes"; 'this is advisory rather than prescriptive language about requirements' (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.
+**Evidence:** Only advisory language exists: "Trace the full coordination flow across agents with LangSmith" and "set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes", which is advisory rather than prescriptive language about requirements (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.
 
 **Rationale:** When LangSmith tracing or checkpointing is enabled, the full call tree within one graph run is reconstructable, including subgraph invocations. But it is opt-in, and provenance across separate deployments/processes is not addressed by the framework.
 

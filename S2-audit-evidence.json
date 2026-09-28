@@ -107,7 +107,7 @@
     {
      "id": "C2",
      "verdict": "partial",
-     "evidence": "\"Interrupts allow you to pause graph execution at specific points and wait for external input before continuing. This enables human-in-the-loop patterns.\" and \"One of the most common uses of interrupts is to pause before a critical action and ask for approval.\" But: \"The documentation does not explicitly identify or name specific human principals... references generic roles like 'caller,' 'reviewer,' 'user,' and 'human' without specifying identity requirements or authentication mechanisms.\" (https://docs.langchain.com/oss/python/langgraph/interrupts)",
+     "evidence": "\"Interrupts allow you to pause graph execution at specific points and wait for external input before continuing. This enables human-in-the-loop patterns.\" and \"One of the most common uses of interrupts is to pause before a critical action and ask for approval.\" But the documentation does not explicitly identify or name specific human principals; it references generic roles like 'caller,' 'reviewer,' 'user,' and 'human' without specifying identity requirements or authentication mechanisms. (https://docs.langchain.com/oss/python/langgraph/interrupts)",
      "rationale": "interrupt() is a first-class framework hook an app can use to anchor a human, but it is optional, per-node, and carries no identity of the approving person. No end-to-end human principal is represented in the framework; identity is lost at the first agent boundary unless the app builds it."
     },
     {
@@ -119,7 +119,7 @@
     {
      "id": "C4",
      "verdict": "partial",
-     "evidence": "Only advisory language exists: \"Trace the full coordination flow across agents with LangSmith\" and \"set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes\"; 'this is advisory rather than prescriptive language about requirements' (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.",
+     "evidence": "Only advisory language exists: \"Trace the full coordination flow across agents with LangSmith\" and \"set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes\", which is advisory rather than prescriptive language about requirements (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.",
      "rationale": "When LangSmith tracing or checkpointing is enabled, the full call tree within one graph run is reconstructable, including subgraph invocations. But it is opt-in, and provenance across separate deployments/processes is not addressed by the framework."
     },
     {
