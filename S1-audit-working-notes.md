@@ -182,7 +182,7 @@ Per-assessment verbatim quotations, source URLs, and rationale for all twenty-fi
 
 ### C4 verdict: partial
 
-**Evidence:** Tracing doc: "The entire `Runner.{run, run_sync, run_streamed}()` is wrapped in a `trace()`... Handoffs are wrapped in `handoff_span()`"; the span tree covers all hops of a run, so the delegation tree is reconstructable when tracing is on. But: "You can also disable tracing entirely by using the `set_tracing_disabled()` function." (config page) and "set `RunConfig.trace_include_sensitive_data` to `False`" strips payloads (https://openai.github.io/openai-agents-python/tracing/, /config/). Handoffs doc: "Handoffs stay within a single run."
+**Evidence:** Tracing doc: "The entire `Runner.{run, run_sync, run_streamed}()` is wrapped in a `trace()`... Handoffs are wrapped in `handoff_span()`"; the span tree covers all hops of a run, so the delegation tree is reconstructable when tracing is on. But: "You can also disable tracing entirely by using the `set_tracing_disabled()` function." (config page) and "set `RunConfig.trace_include_sensitive_data` to `False`" strips payloads (https://openai.github.io/openai-agents-python/tracing/; https://openai.github.io/openai-agents-python/config/). Handoffs doc: "Handoffs stay within a single run."
 
 **Rationale:** Chain-complete within a single Runner invocation and on by default, which is stronger than most SDKs, but optional (opt-out), payload-redactable, and absent under ZDR. Provenance across separate runs or across processes/organizations is not guaranteed. Fails the MUST test; clear partial.
 
