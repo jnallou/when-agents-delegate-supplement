@@ -6,7 +6,7 @@
  "artifacts": [
   {
    "artifact": "MCP (Model Context Protocol) specification, modelcontextprotocol.io",
-   "version": "Current revision 2026-07-28 (audited 2026-08-25; earlier revisions 2025-06-18 and 2025-11-25 checked for continuity — security language is materially unchanged)",
+   "version": "Current revision 2026-07-28 (audited 2026-08-25; earlier revisions 2025-06-18 and 2025-11-25 checked for continuity; security language is materially unchanged)",
    "urls": [
     "https://modelcontextprotocol.io/specification/2026-07-28",
     "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
@@ -18,7 +18,7 @@
     {
      "id": "C1",
      "verdict": "partial",
-     "evidence": "Authorization page (2026-07-28): \"Authorization is **OPTIONAL** for MCP implementations.\" Within a hop, tokens are verifiable and audience-bound at MUST level: \"MCP clients **MUST** implement Resource Indicators for OAuth 2.0 as defined in RFC 8707\"; \"MCP servers **MUST** validate that access tokens were issued specifically for them as the intended audience\"; \"MCP servers **MUST NOT** accept or transit any other tokens.\" Cross-hop expansion is blocked but inheritance is not defined: security_best_practices — \"MCP servers **MUST NOT** accept any tokens that were not explicitly issued for the MCP server\" (token passthrough forbidden). Scope subsetting is advisory only: \"the auth server MAY issue a subset of requested scopes\"; \"MCP clients **SHOULD** follow the principle of least privilege.\" (https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization; .../2025-06-18/basic/security_best_practices)",
+     "evidence": "Authorization page (2026-07-28): \"Authorization is **OPTIONAL** for MCP implementations.\" Within a hop, tokens are verifiable and audience-bound at MUST level: \"MCP clients **MUST** implement Resource Indicators for OAuth 2.0 as defined in RFC 8707\"; \"MCP servers **MUST** validate that access tokens were issued specifically for them as the intended audience\"; \"MCP servers **MUST NOT** accept or transit any other tokens.\" Cross-hop expansion is blocked but inheritance is not defined: security_best_practices: \"MCP servers **MUST NOT** accept any tokens that were not explicitly issued for the MCP server\" (token passthrough forbidden). Scope subsetting is advisory only: \"the auth server MAY issue a subset of requested scopes\"; \"MCP clients **SHOULD** follow the principle of least privilege.\" (https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization; .../2025-06-18/basic/security_best_practices)",
      "notes": "Authorization travels as a verifiable OAuth token, and downstream parties cannot reuse or expand a given token (audience binding + passthrough ban are MUST). But each hop mints a fresh token from an authorization server ('The access token used at the upstream API is a separate token, issued by the upstream authorization server'), so the delegate's effective scope is NOT mechanically derived from or bounded by the delegator's scope; attenuation across the chain depends on each AS's policy, not the protocol. And the whole mechanism is OPTIONAL and HTTP-transport-only (STDIO 'SHOULD NOT' use it)."
     },
     {
@@ -30,7 +30,7 @@
     {
      "id": "C3",
      "verdict": "absent",
-     "evidence": "Searched the 2026-07-28 spec index, architecture, authorization, and security best practices pages for any requirement to record delegation events (who delegated, to whom, under what goal/scope). Nothing normative found. Closest text is advisory operational guidance: security_best_practices Scope Minimization — \"Log elevation events (scope requested, granted subset) with correlation IDs\" (non-normative 'server guidance'); stdio proxy section — proxies \"**SHOULD**... Log all `stdio` transport usage for security monitoring.\" The spec itself acknowledges the gap as a rationale, not a requirement: token passthrough causes \"Accountability and Audit Trail Issues... make incident investigation, controls, and auditing more difficult.\" (https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices)",
+     "evidence": "Searched the 2026-07-28 spec index, architecture, authorization, and security best practices pages for any requirement to record delegation events (who delegated, to whom, under what goal/scope). Nothing normative found. Closest text is advisory operational guidance: security_best_practices Scope Minimization: \"Log elevation events (scope requested, granted subset) with correlation IDs\" (non-normative 'server guidance'); stdio proxy section: proxies \"**SHOULD**... Log all `stdio` transport usage for security monitoring.\" The spec itself acknowledges the gap as a rationale, not a requirement: token passthrough causes \"Accountability and Audit Trail Issues... make incident investigation, controls, and auditing more difficult.\" (https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices)",
      "notes": "No MCP message, field, or requirement records a delegation event or its initiator. Attribution exists only implicitly via OAuth client_id at each AS, which is per-hop and invisible to other parties in the chain."
     },
     {
@@ -48,7 +48,7 @@
    ]
   },
   {
-   "artifact": "A2A (Agent2Agent) protocol — a2a-protocol.org, Linux Foundation (originally Google)",
+   "artifact": "A2A (Agent2Agent) protocol, a2a-protocol.org, Linux Foundation (originally Google)",
    "version": "Specification 1.0.0 (latest published at a2a-protocol.org/latest/specification/), audited 2026-08-25",
    "urls": [
     "https://a2a-protocol.org/latest/specification/",
@@ -65,19 +65,19 @@
     {
      "id": "C2",
      "verdict": "partial",
-     "evidence": "OpenIdConnectSecurityScheme is defined at protocol level (Section 4.5.5, https://a2a-protocol.org/latest/specification/), so a human principal CAN be authenticated at a hop. But \"A2A protocol payloads ... don't carry user or client identity information directly. Identity is established at the transport/HTTP layer\" (https://a2a-protocol.org/latest/topics/enterprise-ready/). Searched for: end user, principal, human, user identity propagation across agents — no normative end-to-end identity requirement found in the spec.",
+     "evidence": "OpenIdConnectSecurityScheme is defined at protocol level (Section 4.5.5, https://a2a-protocol.org/latest/specification/), so a human principal CAN be authenticated at a hop. But \"A2A protocol payloads ... don't carry user or client identity information directly. Identity is established at the transport/HTTP layer\" (https://a2a-protocol.org/latest/topics/enterprise-ready/). Searched for: end user, principal, human, user identity propagation across agents; no normative end-to-end identity requirement found in the spec.",
      "notes": "A human can be identified at the first client-server boundary via OIDC/OAuth, but the protocol carries no user identity in messages, so identity is lost at the first agent boundary unless implementations layer their own passthrough. No MUST-level requirement that a chain terminate in an identified natural person."
     },
     {
      "id": "C3",
      "verdict": "absent",
-     "evidence": "Searched Spec 1.0.0 (https://a2a-protocol.org/latest/specification/) for any requirement to record who delegated, to whom, and under what scope: none exists. The spec defines contextId grouping (Section 3.4.1) and referenceTaskIds (Section 4.1.4), which are informational task references, not delegation records. The only nearby normative text is data-access scoping: \"Implementations MUST enforce authorization scoping to ensure clients can only access authorized tasks\" (Section 13.1) — an access control, not an attribution requirement.",
+     "evidence": "Searched Spec 1.0.0 (https://a2a-protocol.org/latest/specification/) for any requirement to record who delegated, to whom, and under what scope: none exists. The spec defines contextId grouping (Section 3.4.1) and referenceTaskIds (Section 4.1.4), which are informational task references, not delegation records. The only nearby normative text is data-access scoping: \"Implementations MUST enforce authorization scoping to ensure clients can only access authorized tasks\" (Section 13.1), which is an access control, not an attribution requirement.",
      "notes": "The protocol does not model a delegation event at all; a downstream A2A call is just a new client-server request. No required record of delegator identity, goal, or granted scope."
     },
     {
      "id": "C4",
      "verdict": "partial",
-     "evidence": "Audit/tracing appears only in non-normative enterprise guidance at SHOULD level: \"A2A Clients and Servers should participate in distributed tracing systems ... propagate trace context ... through standard HTTP headers\" and \"Audit significant events, such as task creation, critical state changes, and agent actions, especially when involving sensitive data\" (https://a2a-protocol.org/latest/topics/enterprise-ready/). The specification itself (https://a2a-protocol.org/latest/specification/) contains no normative audit, logging, or tracing requirements — searched for audit, log, trace, provenance.",
+     "evidence": "Audit/tracing appears only in non-normative enterprise guidance at SHOULD level: \"A2A Clients and Servers should participate in distributed tracing systems ... propagate trace context ... through standard HTTP headers\" and \"Audit significant events, such as task creation, critical state changes, and agent actions, especially when involving sensitive data\" (https://a2a-protocol.org/latest/topics/enterprise-ready/). The specification itself (https://a2a-protocol.org/latest/specification/) contains no normative audit, logging, or tracing requirements; searched for audit, log, trace, provenance.",
      "notes": "Chain reconstruction is possible only if every implementation voluntarily adopts W3C-style trace propagation; nothing at MUST level guarantees the delegation tree is reconstructable from the origin."
     },
     {
@@ -89,7 +89,7 @@
    ]
   },
   {
-   "artifact": "LangGraph (LangChain) — multi-agent documentation: docs.langchain.com OSS Python docs (multi-agent, graph-api, interrupts) and langchain-ai.github.io/langgraph",
+   "artifact": "LangGraph (LangChain), multi-agent documentation: docs.langchain.com OSS Python docs (multi-agent, graph-api, interrupts) and langchain-ai.github.io/langgraph",
    "version": "docs.langchain.com OSS Python docs as of 2026-08-25; recursion_limit behavior documented for langgraph >= 1.0.6",
    "urls": [
     "https://docs.langchain.com/oss/python/langchain/multi-agent",
@@ -113,20 +113,20 @@
     {
      "id": "C3",
      "verdict": "partial",
-     "evidence": "Tracing is advisory only: \"Trace the full coordination flow across agents with LangSmith\" — described by the docs page as a recommendation, not a requirement (https://docs.langchain.com/oss/python/langchain/multi-agent). Searched for any MUST-level requirement that handoff/delegation events be recorded with delegator, delegatee, and goal; none found.",
+     "evidence": "Tracing is advisory only: \"Trace the full coordination flow across agents with LangSmith\", which the docs page presents as a recommendation, not a requirement (https://docs.langchain.com/oss/python/langchain/multi-agent). Searched for any MUST-level requirement that handoff/delegation events be recorded with delegator, delegatee, and goal; none found.",
      "notes": "If a checkpointer is configured (optional), handoffs appear in persisted state history, and LangSmith (optional external service) records agent-to-agent calls. Neither is mandatory, and neither captures 'under what scope' as a typed field."
     },
     {
      "id": "C4",
      "verdict": "partial",
-     "evidence": "Only advisory language exists: \"Trace the full coordination flow across agents with LangSmith\" and \"set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes\" — 'this is advisory rather than prescriptive language about requirements' (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.",
+     "evidence": "Only advisory language exists: \"Trace the full coordination flow across agents with LangSmith\" and \"set up LangSmith Engine which monitors your traces, detects issues, and proposes fixes\"; 'this is advisory rather than prescriptive language about requirements' (https://docs.langchain.com/oss/python/langchain/multi-agent). No MUST-level cross-hop audit requirement found on any page searched.",
      "notes": "When LangSmith tracing or checkpointing is enabled, the full call tree within one graph run is reconstructable, including subgraph invocations. But it is opt-in, and provenance across separate deployments/processes is not addressed by the framework."
     },
     {
      "id": "C5",
      "verdict": "partial",
      "evidence": "\"Starting in version 1.0.6, the default recursion limit is set to 1000 steps.\" \"Once the limit is reached, LangGraph will raise GraphRecursionError.\" \"The recursion limit can be set on any graph at runtime, and is passed to invoke/stream via the config dictionary.\" (https://docs.langchain.com/oss/python/langgraph/graph-api)",
-     "notes": "This is a genuinely enforced, always-on framework mechanism (a default limit with a hard error), which is stronger than a pure app hook. However, it bounds total super-steps of a run, not delegation depth or the admissible set of delegates; it is freely raisable by the caller; and the docs do not state how it composes across subgraphs. No limit on who may be delegated to exists — the graph topology is entirely developer-defined."
+     "notes": "This is a genuinely enforced, always-on framework mechanism (a default limit with a hard error), which is stronger than a pure app hook. However, it bounds total super-steps of a run, not delegation depth or the admissible set of delegates; it is freely raisable by the caller; and the docs do not state how it composes across subgraphs. No limit on who may be delegated to exists; the graph topology is entirely developer-defined."
     }
    ]
   },
@@ -169,7 +169,7 @@
     {
      "id": "C5",
      "verdict": "partial",
-     "evidence": "Termination docs: \"A run can go on forever, and in many cases, we need to know when to stop them\" — 11 optional termination conditions (MaxMessageTermination, TimeoutTermination, HandoffTermination, etc.) (https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html). Teams docs: max_turns is \"The maximum number of turns in the group chat before stopping\" and \"defaults to None, meaning no limit\" (https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/teams.html). The Swarm `handoffs` parameter bounds admissible delegates per agent. Searched for mandatory recursion or depth limits: none found.",
+     "evidence": "Termination docs: \"A run can go on forever, and in many cases, we need to know when to stop them\", followed by 11 optional termination conditions (MaxMessageTermination, TimeoutTermination, HandoffTermination, etc.) (https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html). Teams docs: max_turns is \"The maximum number of turns in the group chat before stopping\" and \"defaults to None, meaning no limit\" (https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/teams.html). The Swarm `handoffs` parameter bounds admissible delegates per agent. Searched for mandatory recursion or depth limits: none found.",
      "notes": "Bounds on turns/messages/tokens/time and a per-agent admissible-delegate list exist, but every one is app-level configuration with unlimited defaults; there is no protocol-level recursion or depth limit."
     }
    ]
@@ -207,7 +207,7 @@
     {
      "id": "C4",
      "verdict": "partial",
-     "evidence": "Tracing doc: \"The entire `Runner.{run, run_sync, run_streamed}()` is wrapped in a `trace()`... Handoffs are wrapped in `handoff_span()`\" — the span tree covers all hops of a run, so the delegation tree is reconstructable when tracing is on. But: \"You can also disable tracing entirely by using the `set_tracing_disabled()` function.\" (config page) and \"set `RunConfig.trace_include_sensitive_data` to `False`\" strips payloads (https://openai.github.io/openai-agents-python/tracing/, /config/). Handoffs doc: \"Handoffs stay within a single run.\"",
+     "evidence": "Tracing doc: \"The entire `Runner.{run, run_sync, run_streamed}()` is wrapped in a `trace()`... Handoffs are wrapped in `handoff_span()`\"; the span tree covers all hops of a run, so the delegation tree is reconstructable when tracing is on. But: \"You can also disable tracing entirely by using the `set_tracing_disabled()` function.\" (config page) and \"set `RunConfig.trace_include_sensitive_data` to `False`\" strips payloads (https://openai.github.io/openai-agents-python/tracing/, /config/). Handoffs doc: \"Handoffs stay within a single run.\"",
      "notes": "Chain-complete within a single Runner invocation and on by default, which is stronger than most SDKs, but optional (opt-out), payload-redactable, and absent under ZDR. Provenance across separate runs or across processes/organizations is not guaranteed. Fails the MUST test; clear partial."
     },
     {
